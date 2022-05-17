@@ -1,0 +1,39 @@
+version: '3.3'
+
+services:
+  web:
+    build: ./app
+    command: gunicorn django_app.wsgi:application --bind 0.0.0.0:8000
+    expose:
+      - 8000
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+    networks:
+      - appnet
+  db:
+    image: postgres:14-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=django_app
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=django_app
+    networks:
+      - appnet
+  nginx:
+    build: ./nginx
+    ports:
+      - 8001:80
+    depends_on:
+      - web
+    networks:
+      - appnet
+
+volumes:
+  postgres_data:
+
+networks:
+  appnet:
+    driver: bridge
