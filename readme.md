@@ -6,7 +6,7 @@ This is a project that creates a simple dockerized web application using Django,
 
 1. Clone the repository into the host machine/VM.
 
-2. Edit the user and password for the database in the .env file.
+2. Edit the db name, user name and password in the .env file or leave them as they are, if you wish.
 
 3. Spin up containers with the following command:
 
